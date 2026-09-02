@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<title>Ayy Cake — Bloxburg PO</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ LANDING ============ -->
+  <div id="view-landing" class="view">
+    <div class="hero">
+      <div class="logo-badge">🍰</div>
+      <h1 id="shop-name-text">Ayy Cake</h1>
+      <p class="tagline" id="shop-tagline-text">PO makanan Bloxburg dengan sistem antrean.</p>
+      <p class="desc">Isi data kamu, pilih menu, tentukan jumlah tray, bayar, lalu dapatkan nomor antrian otomatis.</p>
+      <button class="btn-cta" id="btn-go-order">🍰 ORDER SEKARANG</button>
+      <div style="margin-top:10px;">
+        <button class="btn btn-outline" id="btn-go-status-landing">📋 Cek Status Order</button>
+      </div>
+    </div>
+
+    <div class="how-to">
+      <h3>📋 Cara Order</h3>
+      <ol>
+        <li>Masukkan Nick Roblox</li>
+        <li>Masukkan Name TikTok</li>
+        <li>Pilih menu & tentukan jumlah Tray</li>
+        <li>Isi PO & catatan (opsional)</li>
+        <li>Kirim pesanan &amp; lakukan pembayaran</li>
+        <li>Tekan "Saya Sudah Bayar"</li>
+        <li>Dapatkan nomor antrean</li>
+        <li>Tunggu pesanan diproses admin</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ============ STEP 1: IDENTITAS ============ -->
+  <div id="view-identity" class="view hidden">
+    <div class="topbar">
+      <button class="back-btn" data-back="#view-landing">←</button>
+      <h2>Data Pembeli</h2>
+    </div>
+    <div class="section">
+      <div class="card">
+        <label class="field-label">Nick Roblox</label>
+        <input type="text" id="input-roblox" placeholder="cth: Jshsh123" />
+        <div class="error-text" id="err-roblox">Nick Roblox wajib diisi.</div>
+
+        <label class="field-label">Name TikTok</label>
+        <input type="text" id="input-tiktok" placeholder="cth: @jshshblox" />
+        <div class="error-text" id="err-tiktok">Name TikTok wajib diisi.</div>
+      </div>
+      <button class="btn btn-primary" id="btn-identity-next">Lanjut ke Menu →</button>
+    </div>
+  </div>
+
+  <!-- ============ STEP 2: MENU + TRAY + PO ============ -->
+  <div id="view-menu" class="view hidden">
+    <div class="topbar">
+      <button class="back-btn" data-back="#view-identity">←</button>
+      <h2>Pilih Menu &amp; Tray</h2>
+    </div>
+    <div class="section">
+      <div class="card">
+        <h3>🍽️ Menu Tersedia</h3>
+        <div id="menu-list"></div>
+        <p class="hint">Harga di atas menu hanya referensi. Tulis pesanan detail kamu di kolom "Isi PO" di bawah.</p>
+      </div>
+
+      <div class="card">
+        <h3>📦 Jumlah Tray</h3>
+        <div class="tray-stepper">
+          <button id="btn-tray-minus">−</button>
+          <div class="tray-count" id="tray-count">1</div>
+          <button id="btn-tray-plus">+</button>
+        </div>
+        <div class="tray-total">1 Tray = <span id="price-per-tray-text" class="amount">140P</span> · Total: <span id="tray-total-amount" class="amount">140P</span></div>
+      </div>
+
+      <div class="card">
+        <h3>📝 Pesanan / Isi PO</h3>
+        <label class="field-label">Tuliskan pesananmu</label>
+        <textarea id="input-items" placeholder="Contoh:&#10;2 Chocolate Cupcakes&#10;1 Strawberry Cream Cake&#10;1 Plate of Croissants"></textarea>
+      </div>
+
+      <div class="card">
+        <h3>💬 Catatan untuk Admin</h3>
+        <textarea id="input-notes" placeholder="Contoh: Tolong dibuatkan warna pink (opsional)"></textarea>
+      </div>
+
+      <button class="btn btn-primary" id="btn-menu-next">Lihat Ringkasan →</button>
+    </div>
+  </div>
+
+  <!-- ============ STEP 3: RINGKASAN ============ -->
+  <div id="view-summary" class="view hidden">
+    <div class="topbar">
+      <button class="back-btn" data-back="#view-menu">←</button>
+      <h2>Ringkasan Order</h2>
+    </div>
+    <div class="section">
+      <div class="card">
+        <h3>🧾 Order Summary</h3>
+        <div class="summary-row"><span class="label">Nick Roblox</span><span class="value" id="summary-roblox"></span></div>
+        <div class="summary-row"><span class="label">TikTok</span><span class="value" id="summary-tiktok"></span></div>
+        <div class="summary-row"><span class="label">Jumlah Tray</span><span class="value" id="summary-tray"></span></div>
+        <div class="summary-row"><span class="label">Harga</span><span class="value" id="summary-price-per-tray"></span></div>
+        <div class="summary-row total"><span class="label">Total</span><span class="value" id="summary-total"></span></div>
+        <label class="field-label">Pesanan</label>
+        <div class="summary-pre" id="summary-items"></div>
+        <label class="field-label">Catatan</label>
+        <div class="summary-pre" id="summary-notes"></div>
+      </div>
+      <button class="btn btn-primary" id="btn-submit-order">KIRIM PESANAN</button>
+    </div>
+  </div>
+
+  <!-- ============ STEP 4: PAYMENT ============ -->
+  <div id="view-payment" class="view hidden">
+    <div class="topbar">
+      <h2>Pembayaran</h2>
+    </div>
+    <div class="section">
+      <div class="card">
+        <div class="summary-row"><span class="label">Order ID</span><span class="value" id="payment-order-code"></span></div>
+        <div class="summary-row total"><span class="label">Total Bayar</span><span class="value" id="payment-total"></span></div>
+        <div class="qr-box" id="qr-wrap"></div>
+        <p class="hint" style="text-align:center;">Silakan scan QR di atas untuk melakukan pembayaran secara manual. Setelah bayar, tekan tombol di bawah.</p>
+      </div>
+      <button class="btn btn-primary" id="btn-already-paid">✅ SAYA SUDAH BAYAR</button>
+      <p class="hint" style="text-align:center; margin-top:10px;">Admin akan memeriksa &amp; mengonfirmasi pembayaranmu secara manual.</p>
+    </div>
+  </div>
+
+  <!-- ============ STEP 5: SUCCESS ============ -->
+  <div id="view-success" class="view hidden">
+    <div class="success-hero">
+      <div class="big-emoji">🎉</div>
+      <h1>ORDER BERHASIL!</h1>
+      <p>Terima kasih sudah melakukan PO!</p>
+      <p class="hint">Nomor Antrian Kamu</p>
+      <div class="queue-badge" id="success-queue-label">#000</div>
+    </div>
+    <div class="section">
+      <div class="card">
+        <div class="summary-row"><span class="label">Order ID</span><span class="value" id="success-order-code"></span></div>
+        <div class="summary-row"><span class="label">Nick Roblox</span><span class="value" id="success-roblox"></span></div>
+        <div class="summary-row"><span class="label">TikTok</span><span class="value" id="success-tiktok"></span></div>
+        <div class="summary-row total"><span class="label">Total</span><span class="value" id="success-total"></span></div>
+        <div class="summary-row"><span class="label">Status</span><span class="value">Menunggu Konfirmasi Pembayaran</span></div>
+      </div>
+      <p class="hint" style="text-align:center;">⚠️ Harap simpan nomor antrian &amp; Order ID kamu.</p>
+      <button class="btn btn-primary" id="btn-success-status">📋 LIHAT STATUS ORDER</button>
+    </div>
+  </div>
+
+  <!-- ============ STATUS CHECK ============ -->
+  <div id="view-status" class="view hidden">
+    <div class="topbar">
+      <button class="back-btn" id="btn-back-landing-from-status">←</button>
+      <h2>Cek Status Order</h2>
+    </div>
+    <div class="section">
+      <div class="card">
+        <label class="field-label">Order ID atau Nomor Antrian</label>
+        <input type="text" id="input-status-code" placeholder="cth: ORD-20260902-0023 atau 023" />
+        <button class="btn btn-primary" id="btn-check-status">Cek Status</button>
+      </div>
+      <div class="card hidden" id="status-result"></div>
+    </div>
+  </div>
+
+  <!-- ============ LOADING ============ -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p style="color:#8a5a44; font-size:0.85rem;">Memproses...</p>
+  </div>
+
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

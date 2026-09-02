@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — Ayy Cake</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="admin-body">
+
+  <!-- ============ LOGIN ============ -->
+  <div id="admin-login-view" class="admin-login-wrap">
+    <div class="admin-login-card">
+      <div style="font-size:2.2rem;">🍰</div>
+      <h1>Admin Ayy Cake</h1>
+      <p>Masuk untuk mengelola order, menu, harga &amp; QR pembayaran.</p>
+      <label class="field-label" style="text-align:left;">Email</label>
+      <input type="text" id="login-email" placeholder="admin@email.com" />
+      <label class="field-label" style="text-align:left;">Password</label>
+      <input type="text" id="login-password" placeholder="••••••••" style="-webkit-text-security:disc; text-security:disc;" />
+      <div class="error-text" id="login-error">Email atau password salah.</div>
+      <button class="btn btn-primary" id="btn-login" style="margin-top:16px;">Masuk</button>
+    </div>
+  </div>
+
+  <!-- ============ DASHBOARD SHELL ============ -->
+  <div id="admin-main-view" class="admin-shell hidden">
+    <div class="admin-topbar">
+      <h1>🍰 Ayy Cake — Admin</h1>
+      <button class="logout-btn" id="btn-logout">Keluar</button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+      <button class="tab-btn" data-tab="orders">📦 Orders</button>
+      <button class="tab-btn" data-tab="queue">🔢 Queue</button>
+      <button class="tab-btn" data-tab="menu">🍰 Menu</button>
+      <button class="tab-btn" data-tab="price">💰 Harga</button>
+      <button class="tab-btn" data-tab="qr">🔗 QR Payment</button>
+      <button class="tab-btn" data-tab="settings">⚙️ Pengaturan</button>
+    </div>
+
+    <!-- ---------- TAB: DASHBOARD ---------- -->
+    <div id="tab-dashboard" class="tab-panel">
+      <div class="stat-grid" id="stat-grid"></div>
+      <div class="admin-panel">
+        <h2>🔔 Order Terbaru</h2>
+        <div class="table-scroll">
+          <table class="orders-table" id="recent-orders-table">
+            <thead><tr><th>Antrian</th><th>Roblox</th><th>Tray</th><th>Total</th><th>Status</th><th>Waktu</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- TAB: ORDERS ---------- -->
+    <div id="tab-orders" class="tab-panel hidden">
+      <div class="admin-panel">
+        <h2>📦 Daftar Order</h2>
+        <div class="filter-row">
+          <select id="filter-status">
+            <option value="all">Semua</option>
+            <option value="today">Hari ini</option>
+            <option value="Menunggu Pembayaran">Menunggu Pembayaran</option>
+            <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
+            <option value="Dibayar">Dibayar</option>
+            <option value="order_Diproses">Diproses</option>
+            <option value="order_Selesai">Selesai</option>
+            <option value="order_Dibatalkan">Dibatalkan</option>
+          </select>
+          <input type="text" id="filter-search" placeholder="Cari Nick / TikTok / Order ID / Antrian" />
+          <button class="small-btn outline" id="btn-export-csv">⬇️ Export CSV</button>
+        </div>
+        <div class="table-scroll">
+          <table class="orders-table" id="orders-table">
+            <thead><tr><th>Antrian</th><th>Order ID</th><th>Roblox</th><th>TikTok</th><th>Tray</th><th>Total</th><th>Bayar</th><th>Status</th><th>Waktu</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- TAB: QUEUE ---------- -->
+    <div id="tab-queue" class="tab-panel hidden">
+      <div class="admin-panel">
+        <h2>🔢 Antrian Aktif</h2>
+        <div id="queue-list"></div>
+      </div>
+    </div>
+
+    <!-- ---------- TAB: MENU ---------- -->
+    <div id="tab-menu" class="tab-panel hidden">
+      <div class="admin-panel">
+        <h2>🍰 Menu Management</h2>
+        <button class="small-btn" id="btn-add-menu">+ Tambah Menu</button>
+        <div id="menu-admin-list" style="margin-top:14px;"></div>
+      </div>
+    </div>
+
+    <!-- ---------- TAB: PRICE ---------- -->
+    <div id="tab-price" class="tab-panel hidden">
+      <div class="admin-panel">
+        <h2>💰 Price Settings</h2>
+        <label class="field-label">Harga 1 Tray</label>
+        <input type="text" id="setting-price" />
+        <label class="field-label">Label Mata Uang</label>
+        <input type="text" id="setting-currency" placeholder="P" />
+        <p class="hint">Order lama tidak berubah — harga baru hanya berlaku untuk order berikutnya.</p>
+        <button class="btn btn-primary" id="btn-save-price">Simpan Harga</button>
+      </div>
+    </div>
+
+    <!-- ---------- TAB: QR ---------- -->
+    <div id="tab-qr" class="tab-panel hidden">
+      <div class="admin-panel">
+        <h2>🔗 QR Payment Settings</h2>
+        <div class="qr-admin-preview" id="qr-admin-preview" style="margin-bottom:14px;"></div>
+        <input type="file" id="qr-file-input" accept="image/*" />
+        <div style="display:flex; gap:10px; margin-top:12px;">
+          <button class="small-btn" id="btn-upload-qr">Upload / Ganti QR</button>
+          <button class="small-btn outline" id="btn-delete-qr">Hapus QR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- TAB: SETTINGS ---------- -->
+    <div id="tab-settings" class="tab-panel hidden">
+      <div class="admin-panel">
+        <h2>⚙️ Pengaturan Toko</h2>
+        <label class="field-label">Nama Toko</label>
+        <input type="text" id="setting-shop-name" />
+        <label class="field-label">Tagline</label>
+        <input type="text" id="setting-tagline" />
+        <label class="field-label" style="display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" id="setting-queue-reset" style="width:auto;" />
+          Reset nomor antrian setiap hari
+        </label>
+        <button class="btn btn-primary" id="btn-save-settings">Simpan Pengaturan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ORDER DETAIL MODAL ============ -->
+  <div id="order-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button class="modal-close-x" id="btn-close-modal">✕</button>
+      <h2>Detail Order</h2>
+      <div id="order-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- ============ MENU EDIT MODAL ============ -->
+  <div id="menu-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button class="modal-close-x" id="btn-close-menu-modal">✕</button>
+      <h2 id="menu-modal-title">Tambah Menu</h2>
+      <label class="field-label">Nama Menu</label>
+      <input type="text" id="menu-form-name" />
+      <label class="field-label">Kategori</label>
+      <select id="menu-form-category">
+        <option value="Bakery">Bakery</option>
+        <option value="Cake">Cake</option>
+        <option value="Food">Food</option>
+        <option value="Sides">Sides</option>
+      </select>
+      <label class="field-label">Harga (referensi, opsional)</label>
+      <input type="text" id="menu-form-price" />
+      <label class="field-label" style="display:flex; align-items:center; gap:8px;">
+        <input type="checkbox" id="menu-form-active" style="width:auto;" checked />
+        Aktif (tampil di halaman pembeli)
+      </label>
+      <button class="btn btn-primary" id="btn-save-menu">Simpan Menu</button>
+    </div>
+  </div>
+
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p style="color:#8a5a44; font-size:0.85rem;">Memproses...</p>
+  </div>
+
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>
